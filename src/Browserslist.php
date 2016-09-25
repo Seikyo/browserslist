@@ -5,7 +5,6 @@ namespace Buttress\Browserslist;
 use Buttress\Browserslist\Browser\VersionNormalizer;
 use Buttress\Browserslist\Query\CustomStats;
 use Buttress\Browserslist\Query\DirectDriver;
-use Buttress\BrowsersList\Query\Driver;
 use Buttress\Browserslist\Query\FirefoxESR;
 use Buttress\Browserslist\Query\GlobalStats;
 use Buttress\Browserslist\Query\LastByBrowser;
@@ -17,7 +16,7 @@ use Illuminate\Support\Collection;
 
 class Browserslist
 {
-    /** @var Driver[]|string[] */
+    /** @var array This array may contain fqn classname strings or instances of \Buttress\BrowsersList\Query\Driver */
     protected $queryDrivers;
 
     /** @var \Illuminate\Support\Collection */
