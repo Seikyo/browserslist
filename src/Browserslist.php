@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 
 class Browserslist
 {
-    /** @var Driver[] */
+    /** @var Driver[]|string[] */
     protected $queryDrivers;
 
     /** @var \Illuminate\Support\Collection */
