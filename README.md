@@ -7,8 +7,8 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+**Browserslist** is a tool that reports on current browsers based on data pulled from [caniuse's browser statistics](https://github.com/Fyrd/caniuse). 
+This project is a PHP port of [the JS library of the same name](https://github.com/ai/browserslist).
 
 ## Install
 
