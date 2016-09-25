@@ -52,36 +52,3 @@ class Versions extends RegexpDriver
         });
     }
 }
-
-/*
- *
-            var data = browserslist.checkName(name);
-            var alias = normalizeVersion(data, version);
-            if ( alias ) {
-                version = alias;
-            }
-            version = parseFloat(version);
-
-            var filter;
-            if ( sign === '>' ) {
-                filter = function (v) {
-                    return parseFloat(v) > version;
-                };
-            } else if ( sign === '>=' ) {
-                filter = function (v) {
-                    return parseFloat(v) >= version;
-                };
-            } else if ( sign === '<' ) {
-                filter = function (v) {
-                    return parseFloat(v) < version;
-                };
-            } else if ( sign === '<=' ) {
-                filter = function (v) {
-                    return parseFloat(v) <= version;
-                };
-            }
-            return data.released.filter(filter).map(function (v) {
-                return data.name + ' ' + v;
-            });
-        }
- */
