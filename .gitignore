@@ -1,4 +1,8 @@
-.idea
-/jsproject
-/vendor
+build
+composer.lock
+docs
+vendor
+/data
 /build
+/jsproject
+/.idea
