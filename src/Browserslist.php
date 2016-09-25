@@ -2,6 +2,7 @@
 
 namespace Buttress\Browserslist;
 
+use Buttress\Browserslist\Browser\VersionNormalizer;
 use Buttress\Browserslist\Query\CustomStats;
 use Buttress\Browserslist\Query\DirectDriver;
 use Buttress\BrowsersList\Query\Driver;
@@ -22,13 +23,13 @@ class Browserslist
     /** @var \Illuminate\Support\Collection */
     protected $aliases;
 
-    /** @var Collection  */
+    /** @var Collection */
     protected $versionAliases;
 
     /** @var Collection */
     protected $usage;
 
-    /** @var \Illuminate\Support\Collection  */
+    /** @var \Illuminate\Support\Collection */
     protected $browsers;
 
     /** @var \Illuminate\Support\Collection */
@@ -36,6 +37,9 @@ class Browserslist
 
     /** @var array|string */
     protected $defaultQuery;
+
+    /** @var VersionNormalizer */
+    protected $normalizer;
 
     public function __construct($data)
     {
@@ -63,18 +67,24 @@ class Browserslist
 
         $this->browsers = new Collection(['safari', 'opera', 'ios_saf', 'ie_mob', 'ie', 'edge', 'firefox', 'chrome']);
         $this->queryDrivers = [
-            new LastVersions(),
-            new LastByBrowser(),
-            new OperaMini(),
-            new CustomStats(),
-            new GlobalStats(),
-            new FirefoxESR(),
-            new Versions(),
-            new Range(),
-            new DirectDriver()
+            LastVersions::class,
+            LastByBrowser::class,
+            OperaMini::class,
+            CustomStats::class,
+            GlobalStats::class,
+            FirefoxESR::class,
+            Versions::class,
+            Range::class,
+            DirectDriver::class
         ];
     }
 
+    /**
+     * Get the usage of a browser or set of browsers
+     * @param array $browsers
+     * @param string $country
+     * @return mixed
+     */
     public function coverage(array $browsers, $country = 'global')
     {
         $list = $this;
@@ -93,30 +103,10 @@ class Browserslist
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * Get the data for a particular browser name
+     * @param $name
+     * @return array|null
      */
-    public function getAliases()
-    {
-        return $this->aliases;
-    }
-
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function getBrowsers()
-    {
-        return $this->browsers;
-    }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
     public function getDataByBrowser($name)
     {
         $name = strtolower($name);
@@ -136,24 +126,164 @@ class Browserslist
         }
     }
 
+    /**
+     * Take a version string and return the best possible match based on browsername and available versions
+     * @param $browserName
+     * @param $version
+     * @return null|string
+     */
     public function normalizeVersion($browserName, $version)
     {
-        $data = $this->getDataByBrowser($browserName);
+        $normalizer = $this->getVersionNormalizer();
+        return $normalizer->normalizeVersion($browserName, $version);
+    }
 
-        if (isset($data['versions']) && in_array($version, $data['versions'])) {
-            // Do this instead of returning the version because the matched version might not be exact
-            foreach ($data['versions'] as $realVersion) {
-                if ($realVersion == $version) {
-                    return $realVersion;
-                }
-            }
-        } else {
-            if ($aliases = $this->getVersionAliases()->get($data['name'])) {
-                if (isset($aliases[$version])) {
-                    return $aliases[$version];
-                }
+    /**
+     * Get the version normalizer object
+     * @return \Buttress\Browserslist\Browser\VersionNormalizer
+     */
+    protected function getVersionNormalizer()
+    {
+        if (!$this->normalizer) {
+            $this->normalizer = new VersionNormalizer($this);
+        }
+
+        return $this->normalizer;
+    }
+
+    /**
+     * Run a query against the Browserlist data
+     * @param $query
+     * @return \Illuminate\Support\Collection
+     * @throws \InvalidArgumentException If a query passed is not recognized
+     */
+    public function query($query = null)
+    {
+        if ($query === null) {
+            $query = $this->defaultQuery;
+        }
+
+        $result = new Collection();
+        foreach ($this->generateQueries($query) as $subQuery) {
+            if ($rejectQuery = $this->shouldReject($subQuery)) {
+                $result = $this->rejectQuery($result, $rejectQuery);
+            } else {
+                $result = $result->merge($this->handleQuery($subQuery));
             }
         }
+
+        return $result->unique()->sort($this->queryResultSort())->values();
+    }
+
+    /**
+     * Generator method for retrieving cleaned query strings
+     * @param $query
+     * @return \Generator
+     */
+    private function generateQueries($query)
+    {
+        if (is_string($query)) {
+            $query = explode(',', $query);
+        }
+
+        foreach ((array)$query as $queryString) {
+            if ($trimmed = trim($queryString)) {
+                yield $trimmed;
+            }
+        }
+    }
+
+    /**
+     * @param $query
+     * @return bool|string
+     */
+    private function shouldReject($query)
+    {
+        if (strlen($query) > 4 && substr($query, 0, 4) == 'not ') {
+            return substr($query, 4);
+        }
+
+        return false;
+    }
+
+    /**
+     * Takes a collection and removes the results of the passed query
+     * @param \Illuminate\Support\Collection $result
+     * @param $query
+     * @return Collection
+     */
+    private function rejectQuery(Collection $result, $query)
+    {
+        $without = $this->handleQuery($query);
+
+        return $result->reject(function ($item) use ($without) {
+            return !!$without->contains($item);
+        });
+    }
+
+    /**
+     * Internal query handling method, this delegates to drivers
+     * @param $query
+     * @return \Illuminate\Support\Collection
+     */
+    private function handleQuery($query)
+    {
+        foreach ($this->queryDriverGenerator() as $driver) {
+            if ($driver->handlesQuery($query)) {
+                return $driver->query($query, $this);
+            }
+        }
+
+        throw new \InvalidArgumentException("Unknown browser query `{$query}`");
+    }
+
+    /**
+     * Inflates drivers as they are iterated over
+     * @return \Generator
+     */
+    private function queryDriverGenerator()
+    {
+        foreach ($this->queryDrivers as $key => $driver) {
+            if (is_string($driver) && class_exists($driver)) {
+                $driver = new $driver;
+                $this->queryDrivers[$key] = $driver;
+                yield $driver;
+            } else {
+                yield $driver;
+            }
+        }
+    }
+
+    /**
+     * Result sort closure
+     *
+     * Sorts in natural, then reverse natural order.
+     *
+     * Example sort order:
+     * a 10
+     * a 9
+     * b 100
+     * b 60
+     * z 50
+     * z 1
+     *
+     * @return \Closure
+     */
+    private function queryResultSort()
+    {
+        return function ($a, $b) {
+            $result = strnatcmp($a, $b);
+
+            $lettersOnlyA = preg_replace('/[^a-z]/i', '', $a);
+            $lettersOnlyB = preg_replace('/[^a-z]/i', '', $b);
+
+            // If the browsers are the same
+            if ($lettersOnlyA === $lettersOnlyB) {
+                return -1 * $result;
+            }
+
+            return $result;
+        };
     }
 
     /**
@@ -205,75 +335,36 @@ class Browserslist
     }
 
     /**
-     * Run a query against the Browserlist data
-     * @param $query
      * @return \Illuminate\Support\Collection
-     * @throws \InvalidArgumentException If a query passed is not recognized
      */
-    public function query($query = null)
+    public function getAliases()
     {
-        if ($query === null) {
-            $query = $this->defaultQuery;
-        }
-
-        $result = new Collection();
-        foreach ($this->generateQueries($query) as $subQuery) {
-            if (strlen($subQuery) > 4 && substr($subQuery, 0, 4) == 'not ') {
-                $without = $this->handleQuery(substr($subQuery, 4));
-                $result = $result->reject(function ($item) use ($without) {
-                    return !!$without->contains($item);
-                });
-            } else {
-                $result = $result->merge($this->handleQuery($subQuery));
-            }
-        }
-
-        return $result->unique()->sort($this->queryResultSort())->values();
+        return $this->aliases;
     }
 
-    private function handleQuery($query)
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function getBrowsers()
     {
-        foreach ($this->queryDrivers as $driver) {
-            if ($driver->handlesQuery($query)) {
-                return $driver->query($query, $this);
-            }
-        }
-
-        throw new \InvalidArgumentException("Unknown browser query `{$query}`");
+        return $this->browsers;
     }
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * Magic method for running a query by invoking the class
+     * @param array ...$arguments
+     * @return \Illuminate\Support\Collection
+     */
     public function __invoke(...$arguments)
     {
         return $this->query(...$arguments);
-    }
-
-    private function generateQueries($query)
-    {
-        if (is_string($query)) {
-            $query = explode(',', $query);
-        }
-
-        foreach ((array) $query as $queryString) {
-            if ($trimmed = trim($queryString)) {
-                yield $trimmed;
-            }
-        }
-    }
-
-    private function queryResultSort()
-    {
-        return function ($a, $b) {
-            $result = strnatcmp($a, $b);
-
-            $lettersOnlyA = preg_replace('/[^a-z]/i', '', $a);
-            $lettersOnlyB = preg_replace('/[^a-z]/i', '', $b);
-
-            // If the browsers are the same
-            if ($lettersOnlyA === $lettersOnlyB) {
-                return -1 * $result;
-            }
-
-            return $result;
-        };
     }
 }
