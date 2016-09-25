@@ -16,7 +16,7 @@ class LastByBrowser extends RegexpDriver
         $data = $list->getDataByBrowser($name);
         $versions = Collection::make($data['released']);
 
-        return $versions->slice(-1 * intval($count))->map(function($version) use ($data) {
+        return $versions->slice(-1 * intval($count))->map(function ($version) use ($data) {
             return implode(' ', [$data['name'], $version]);
         });
     }
@@ -25,5 +25,4 @@ class LastByBrowser extends RegexpDriver
     {
         return '/^last\s+(\d+)\s+(\w+)\s+versions?$/i';
     }
-
 }

@@ -26,7 +26,7 @@ class DataParser
 
     private function normalize($list)
     {
-        return array_filter($list, function($item) {
+        return array_filter($list, function ($item) {
             return !!$item;
         });
     }
@@ -90,5 +90,4 @@ class DataParser
         $stats = $result->usage->get('custom', []);
         $result->usage['custom'] = $this->apply($stats, $name, $data);
     }
-
 }

@@ -13,7 +13,7 @@ class LastVersions extends RegexpDriver
         list($versions) = $arguments;
         $selected = new Collection();
 
-        $list->getBrowsers()->each(function($browserName) use ($list, $versions, &$selected) {
+        $list->getBrowsers()->each(function ($browserName) use ($list, $versions, &$selected) {
             $browserData = $list->getDataByBrowser($browserName);
 
             if (!$browserData) {
@@ -22,7 +22,7 @@ class LastVersions extends RegexpDriver
 
             $selectedVersions = Collection::make($browserData['released'])
                 ->slice(-1 * $versions)
-                ->map(function($version) use ($browserData) {
+                ->map(function ($version) use ($browserData) {
                     return implode(' ', [$browserData['name'], $version]);
                 });
 
@@ -39,5 +39,4 @@ class LastVersions extends RegexpDriver
     {
         return '/^last\s+(\d+)\s+versions?$/i';
     }
-
 }

@@ -16,5 +16,4 @@ class ESRTest extends TestCase
         $this->assertSortedSame($result, $list('ff esr'));
         $this->assertSortedSame($result, $list('fx esr'));
     }
-
 }

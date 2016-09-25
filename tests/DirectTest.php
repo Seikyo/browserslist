@@ -53,5 +53,4 @@ class DirectTest extends TestCase
         $this->assertSortedSame(['safari TP'], $this->list->query('safari tp'));
         $this->assertSortedSame(['safari TP'], $this->list->query('Safari Tp'));
     }
-
 }

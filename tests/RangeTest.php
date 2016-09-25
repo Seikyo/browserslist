@@ -31,7 +31,6 @@ class RangeTest extends TestCase implements DataProvider
     {
         $this->list->query('Fakebrowser 1-10');
     }
-
 }
 
 /**

@@ -16,5 +16,4 @@ class CustomStatsTest extends TestCase
 
         $this->assertSortedSame(['ie 11'], $list('>10% in my stats'));
     }
-
 }

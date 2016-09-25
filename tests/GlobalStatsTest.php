@@ -38,5 +38,4 @@ class GlobalStatsTest extends TestCase
         $this->assertSortedSame(['ie 11'], $this->list->query('>10.1%'));
         $this->assertSortedSame(['ie 11', 'ie 10', 'ie 9'], $this->list->query('>.2%'));
     }
-
 }

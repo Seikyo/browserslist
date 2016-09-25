@@ -27,32 +27,31 @@ class Versions extends RegexpDriver
 
         switch ($sign) {
             case '>':
-                $releases = $releases->filter(function($release) use ($version) {
+                $releases = $releases->filter(function ($release) use ($version) {
                     return $release > $version;
                 });
                 break;
             case '>=':
-                $releases = $releases->filter(function($release) use ($version) {
+                $releases = $releases->filter(function ($release) use ($version) {
                     return floatval($release) >= $version;
                 });
                 break;
             case '<':
-                $releases = $releases->filter(function($release) use ($version) {
+                $releases = $releases->filter(function ($release) use ($version) {
                     return floatval($release) < $version;
                 });
                 break;
             case '<=':
-                $releases = $releases->filter(function($release) use ($version) {
+                $releases = $releases->filter(function ($release) use ($version) {
                     return floatval($release) <= $version;
                 });
                 break;
         }
 
-        return $releases->map(function($version) use ($name) {
+        return $releases->map(function ($version) use ($name) {
             return "{$name} {$version}";
         });
     }
-
 }
 
 /*

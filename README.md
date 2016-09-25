@@ -15,17 +15,17 @@ PSRs you support to avoid any confusion with users and contributors.
 Via Composer
 
 ``` bash
-$ composer require Buttress/Browserslist
+$ composer require buttress/browserslist
 ```
 
 ## Usage
 
 ``` php
-$listFactory = new BrowserlistFactory();
-$browserlist = $listFactory->createWithData();
+$listFactory = new BrowserslistFactory();
+$browserslist = $listFactory->createWithData();
 
 // Get the last version of every browser AND browsers with > 10% usage
-$browsers = $browserlist('last 1 version, > 10%');
+$browsers = $browserslist('last 1 version, > 10%');
 ```
 
 ## Change log

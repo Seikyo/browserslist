@@ -47,5 +47,4 @@ class BrowserslistFactory
 
         return $config;
     }
-
 }

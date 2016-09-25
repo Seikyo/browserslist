@@ -84,7 +84,7 @@ class Browserslist
             throw new \InvalidArgumentException('Country specific coverage is not supported.');
         }
 
-        return Collection::make($browsers)->reduce(function($total, $browser) use ($list) {
+        return Collection::make($browsers)->reduce(function ($total, $browser) use ($list) {
             if (!$usage = array_get($list->getUsage()->get("global"), $browser)) {
                 $usage = array_get($list->getUsage()->get("global"), preg_replace('/ [\d.]+$/', ' 0', $browser));
             }
@@ -128,7 +128,9 @@ class Browserslist
             $name = $aliases[$name];
         }
 
-        if ($browser = $data->first(function($browser) use ($name) { return $browser['name'] === $name; })) {
+        if ($browser = $data->first(function ($browser) use ($name) {
+            return $browser['name'] === $name;
+        })) {
             return $browser;
         }
     }
@@ -207,7 +209,7 @@ class Browserslist
      * @return \Illuminate\Support\Collection
      * @throws \InvalidArgumentException If a query passed is not recognized
      */
-    public function query($query=null)
+    public function query($query = null)
     {
         if ($query === null) {
             $query = $this->defaultQuery;
@@ -217,7 +219,7 @@ class Browserslist
         foreach ($this->generateQueries($query) as $subQuery) {
             if (strlen($subQuery) > 4 && substr($subQuery, 0, 4) == 'not ') {
                 $without = $this->handleQuery(substr($subQuery, 4));
-                $result = $result->reject(function($item) use ($without) {
+                $result = $result->reject(function ($item) use ($without) {
                     return !!$without->contains($item);
                 });
             } else {
@@ -259,7 +261,7 @@ class Browserslist
 
     private function queryResultSort()
     {
-        return function($a, $b) {
+        return function ($a, $b) {
             $result = strnatcmp($a, $b);
 
             $lettersOnlyA = preg_replace('/[^a-z]/i', '', $a);
@@ -273,5 +275,4 @@ class Browserslist
             return $result;
         };
     }
-
 }

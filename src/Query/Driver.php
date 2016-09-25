@@ -26,5 +26,4 @@ interface Driver
      * @return bool
      */
     public function handlesQuery($string);
-
 }

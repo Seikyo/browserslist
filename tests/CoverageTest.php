@@ -35,5 +35,4 @@ class CoverageTest extends TestCase //implements DataProvider
     {
         $this->assertEquals(0, $this->list->coverage([]));
     }
-
 }

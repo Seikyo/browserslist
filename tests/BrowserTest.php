@@ -37,5 +37,4 @@ class BrowserTest extends TestCase implements DataProvider
     {
         $this->assertSortedSame(['ie 11'], $this->list->query('Last 01 Explorer Version')->toArray());
     }
-
 }

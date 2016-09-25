@@ -45,5 +45,4 @@ abstract class RegexpDriver implements Driver
     {
         return preg_match($this->getRegexp(), $string);
     }
-
 }

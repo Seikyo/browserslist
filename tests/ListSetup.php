@@ -49,5 +49,4 @@ trait ListSetup
     {
         $this->list = null;
     }
-
 }

@@ -32,5 +32,4 @@ class CustomStats extends RegexpDriver
     {
         return '/^>\s*(\d*\.?\d+)%\s+in\s+my\s+stats$/';
     }
-
 }

@@ -26,5 +26,4 @@ class GlobalStats extends RegexpDriver
 
         return $result;
     }
-
 }

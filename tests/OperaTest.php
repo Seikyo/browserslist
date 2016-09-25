@@ -16,5 +16,4 @@ class OperaTest extends TestCase
     {
         $this->assertSortedSame(['op_mini all'], $this->list->query('OperaMini all'));
     }
-
 }

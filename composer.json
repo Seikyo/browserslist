@@ -1,12 +1,12 @@
 {
-    "name": "Buttress/Browserslist",
+    "name": "buttress/browserslist",
     "type": "library",
     "description": "PHP Port of js browserslist",
     "keywords": [
         "Buttress",
         "Browserslist"
     ],
-    "homepage": "https://github.com/Buttress/Browserslist",
+    "homepage": "https://github.com/buttress/browserslist",
     "license": "MIT",
     "authors": [
         {

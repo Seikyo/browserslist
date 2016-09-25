@@ -16,5 +16,4 @@ class FirefoxESR extends RegexpDriver
     {
         return Collection::make(['firefox 45']);
     }
-
 }

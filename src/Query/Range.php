@@ -34,5 +34,4 @@ class Range extends RegexpDriver
                 return "{$name} {$version}";
             });
     }
-
 }

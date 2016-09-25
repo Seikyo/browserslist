@@ -17,5 +17,4 @@ class OperaMini extends RegexpDriver
     {
         return '/(operamini|op_mini)\s+all/i';
     }
-
 }

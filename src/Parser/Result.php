@@ -28,5 +28,4 @@ class Result
         $this->usage = new Collection();
         $this->aliases = new Collection();
     }
-
 }

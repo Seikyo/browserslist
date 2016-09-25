@@ -47,5 +47,4 @@ class DirectDriver extends RegexpDriver
         $data = $list->getDataByBrowser($name);
         return $data['name'] . ' ' . $version;
     }
-
 }
