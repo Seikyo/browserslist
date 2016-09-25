@@ -4,7 +4,6 @@ namespace Buttress\Browserslist\Tests;
 
 class DirectTest extends TestCase
 {
-
     use ListSetup;
 
     public function testGetByName()

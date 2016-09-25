@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 
 class Result
 {
-
     /**
      * @var \Illuminate\Support\Collection
      */

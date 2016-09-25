@@ -11,7 +11,6 @@ use Illuminate\Support\Collection;
  */
 abstract class RegexpDriver implements Driver
 {
-
     /**
      * The regular expression to test against
      * @return string

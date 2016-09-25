@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 class CoverageTest extends TestCase //implements DataProvider
 {
-
     use ListSetup;
 
     public function populateList(Browserslist $list)

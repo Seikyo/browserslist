@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 class Range extends RegexpDriver
 {
-
     public function getRegexp()
     {
         return '/^(\w+)\s+([\d\.]+)\s*-\s*([\d\.]+)$/i';
@@ -15,7 +14,7 @@ class Range extends RegexpDriver
 
     public function processQuery(Browserslist $list, ...$arguments)
     {
-        list ($name, $from, $to) = $arguments;
+        list($name, $from, $to) = $arguments;
 
         if (!$data = $list->getDataByBrowser($name)) {
             throw new \InvalidArgumentException("Unknown browser {$name}");

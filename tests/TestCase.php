@@ -6,7 +6,6 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-
     public static $dataCache;
     public static $usageCache;
     public static $aliasCache;

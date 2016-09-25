@@ -4,7 +4,6 @@ namespace Buttress\Browserslist\Tests;
 
 class ESRTest extends TestCase
 {
-
     use ListSetup;
 
     public function testFirefoxESR()

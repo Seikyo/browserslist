@@ -12,7 +12,6 @@ use Illuminate\Support\Collection;
  */
 interface Driver
 {
-
     /**
      * @param $string
      * @param \Buttress\Browserslist\BrowsersList $list

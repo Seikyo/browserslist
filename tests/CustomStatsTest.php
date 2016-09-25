@@ -6,7 +6,6 @@ use Buttress\Browserslist\BrowserslistFactory;
 
 class CustomStatsTest extends TestCase
 {
-
     public function testCustomStats()
     {
         $factory = new BrowserslistFactory();

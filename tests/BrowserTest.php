@@ -4,7 +4,6 @@ namespace Buttress\Browserslist\Tests;
 
 class BrowserTest extends TestCase implements DataProvider
 {
-
     use ListSetup;
 
     public function getData()

@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 class Versions extends RegexpDriver
 {
-
     public function getRegexp()
     {
         return '/^(\w+)\s*(>=?|<=?)\s*([\d\.]+)$/';
@@ -15,7 +14,7 @@ class Versions extends RegexpDriver
 
     public function processQuery(Browserslist $list, ...$arguments)
     {
-        list ($name, $sign, $version) = $arguments;
+        list($name, $sign, $version) = $arguments;
         $data = $list->getDataByBrowser($name);
 
         if ($versionAlias = $list->normalizeVersion($name, $version)) {

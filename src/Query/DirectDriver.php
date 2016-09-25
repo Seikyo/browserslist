@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 class DirectDriver extends RegexpDriver
 {
-
     public function getRegexp()
     {
         return '/^(\w+)\s+(tp|[\d\.]+)$/i';

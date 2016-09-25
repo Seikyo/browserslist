@@ -8,7 +8,6 @@ use Buttress\Browserslist\Parser\DataParser;
 
 trait ListSetup
 {
-
     /** @var Browserslist */
     protected $list;
 

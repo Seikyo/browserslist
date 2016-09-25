@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 class CustomStats extends RegexpDriver
 {
-
     public function processQuery(BrowsersList $list, ...$arguments)
     {
         list($percent) = $arguments;

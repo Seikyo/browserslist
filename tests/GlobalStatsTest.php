@@ -6,7 +6,6 @@ use Buttress\Browserslist\Browserslist;
 
 class GlobalStatsTest extends TestCase
 {
-
     use ListSetup;
 
     protected function populateList(Browserslist $list)

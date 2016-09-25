@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 class LastVersions extends RegexpDriver
 {
-
     public function processQuery(BrowsersList $list, ...$arguments)
     {
         list($versions) = $arguments;

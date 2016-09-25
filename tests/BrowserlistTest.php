@@ -4,7 +4,6 @@ namespace Buttress\Browserslist\Tests;
 
 class BrowserlistTest extends TestCase
 {
-
     use ListSetup;
 
     public function testAcceptsArray()

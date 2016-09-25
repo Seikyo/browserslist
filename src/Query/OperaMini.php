@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 class OperaMini extends RegexpDriver
 {
-
     public function processQuery(BrowsersList $list, ...$arguments)
     {
         return new Collection('op_mini all');

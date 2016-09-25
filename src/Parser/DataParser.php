@@ -4,7 +4,6 @@ namespace Buttress\Browserslist\Parser;
 
 class DataParser
 {
-
     public function parse($json, $config = [])
     {
         $result = new Result();

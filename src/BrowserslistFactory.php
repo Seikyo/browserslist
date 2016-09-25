@@ -4,7 +4,6 @@ namespace Buttress\Browserslist;
 
 class BrowserslistFactory
 {
-
     /**
      * @param array $config
      * @param string $dataFile
