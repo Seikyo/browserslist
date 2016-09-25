@@ -127,9 +127,11 @@ class Browserslist
             $name = $aliases[$name];
         }
 
-        if ($browser = $data->first(function ($browser) use ($name) {
+        $browser = $data->first(function ($browser) use ($name) {
             return $browser['name'] === $name;
-        })) {
+        });
+
+        if ($browser) {
             return $browser;
         }
     }
