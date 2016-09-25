@@ -126,22 +126,10 @@ class Browserslist
     }
 
     /**
-     * Take a version string and return the best possible match based on browsername and available versions
-     * @param $browserName
-     * @param $version
-     * @return null|string
-     */
-    public function normalizeVersion($browserName, $version)
-    {
-        $normalizer = $this->getVersionNormalizer();
-        return $normalizer->normalizeVersion($browserName, $version);
-    }
-
-    /**
-     * Get the version normalizer object
+     * Get an instance of the version normalizer
      * @return \Buttress\Browserslist\Browser\VersionNormalizer
      */
-    protected function getVersionNormalizer()
+    public function getVersionNormalizer()
     {
         if (!$this->normalizer) {
             $this->normalizer = new VersionNormalizer($this);

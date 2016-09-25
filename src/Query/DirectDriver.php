@@ -26,7 +26,8 @@ class DirectDriver extends RegexpDriver
 
     public function processVersion(Browserslist $list, $name, $version)
     {
-        if ($versionAlias = $list->normalizeVersion($name, $version)) {
+        $normalizer = $list->getVersionNormalizer();
+        if ($versionAlias = $normalizer->normalizeVersion($name, $version)) {
             $version = $versionAlias;
         } else {
             // Add a .0 if there is none and remove a .0 is there is
@@ -36,7 +37,7 @@ class DirectDriver extends RegexpDriver
                 $versionAlias = substr($version, 0, -2);
             }
 
-            if ($versionAlias = $list->normalizeVersion($name, $versionAlias)) {
+            if ($versionAlias = $normalizer->normalizeVersion($name, $versionAlias)) {
                 $version = $versionAlias;
             } else {
                 throw new \InvalidArgumentException("Unknown version {$version} of {$name}.");

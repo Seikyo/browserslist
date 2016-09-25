@@ -19,8 +19,9 @@ class Range extends RegexpDriver
         if (!$data = $list->getDataByBrowser($name)) {
             throw new \InvalidArgumentException("Unknown browser {$name}");
         }
-        $from = floatval($list->normalizeVersion($name, $from));
-        $to = floatval($list->normalizeVersion($name, $to));
+        $normalizer = $list->getVersionNormalizer();
+        $from = floatval($normalizer->normalizeVersion($name, $from));
+        $to = floatval($normalizer->normalizeVersion($name, $to));
 
         $releases = new Collection($data['released']);
 

@@ -17,7 +17,7 @@ class Versions extends RegexpDriver
         list($name, $sign, $version) = $arguments;
         $data = $list->getDataByBrowser($name);
 
-        if ($versionAlias = $list->normalizeVersion($name, $version)) {
+        if ($versionAlias = $list->getVersionNormalizer()->normalizeVersion($name, $version)) {
             $version = $versionAlias;
         }
 
