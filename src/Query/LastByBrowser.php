@@ -7,7 +7,6 @@ use Illuminate\Support\Collection;
 
 class LastByBrowser extends RegexpDriver
 {
-
     public function processQuery(BrowsersList $list, ...$arguments)
     {
         list($count, $name) = $arguments;
