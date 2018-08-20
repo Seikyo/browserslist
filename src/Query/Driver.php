@@ -1,6 +1,6 @@
 <?php
 
-namespace Buttress\BrowsersList\Query;
+namespace Buttress\Browserslist\Query;
 
 use Buttress\Browserslist\BrowsersList;
 use Illuminate\Support\Collection;
