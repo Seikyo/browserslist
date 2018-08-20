@@ -29,10 +29,10 @@ class VersionNormalizer
 
         if ($version = $this->getVersionFromData($data, $browserVersion)) {
             return $version;
-        } else {
-            $aliases = $this->list->getVersionAliases()->get($data['name'], []);
-            return $this->getVersionFromAliases($aliases, $browserVersion);
         }
+        $aliases = $this->list->getVersionAliases()->get($data['name'], []);
+
+        return $this->getVersionFromAliases($aliases, $browserVersion);
     }
 
     /**
@@ -42,7 +42,7 @@ class VersionNormalizer
      */
     private function getVersionFromData($data, $version)
     {
-        $versions = array_get($data, 'versions', []);
+        $versions = $data['versions'] ?? [];
         if (in_array($version, $versions)) {
             return $this->resolveRealVersion($versions, $version);
         }

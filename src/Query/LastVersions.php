@@ -3,7 +3,7 @@
 namespace Buttress\Browserslist\Query;
 
 use Buttress\Browserslist\Browserslist;
-use Illuminate\Support\Collection;
+use Tightenco\Collect\Support\Collection;
 
 class LastVersions extends RegexpDriver
 {

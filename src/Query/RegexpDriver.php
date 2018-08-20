@@ -3,7 +3,7 @@
 namespace Buttress\Browserslist\Query;
 
 use Buttress\Browserslist\Browserslist;
-use Illuminate\Support\Collection;
+use Tightenco\Collect\Support\Collection;
 
 /**
  * A regular expression powered driver
@@ -20,7 +20,7 @@ abstract class RegexpDriver implements Driver
     /**
      * @param \Buttress\Browserslist\Browserslist $list
      * @param array $arguments
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     abstract public function processQuery(Browserslist $list, ...$arguments);
 

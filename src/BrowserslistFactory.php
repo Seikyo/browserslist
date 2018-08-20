@@ -34,7 +34,7 @@ class BrowserslistFactory
 
     private function handleStats($config)
     {
-        if (($stats = array_get($config, 'stats')) && is_string($stats)) {
+        if (($stats = $config['stats'] ?? null) && is_string($stats)) {
             $stats = $this->getJson($stats);
 
             if (isset($stats['dataByBrowser'])) {

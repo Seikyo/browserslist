@@ -3,7 +3,7 @@
 namespace Buttress\Browserslist\Query;
 
 use Buttress\Browserslist\BrowsersList;
-use Illuminate\Support\Collection;
+use Tightenco\Collect\Support\Collection;
 
 class OperaMini extends RegexpDriver
 {

@@ -3,7 +3,7 @@
 namespace Buttress\Browserslist\Query;
 
 use Buttress\Browserslist\Browserslist;
-use Illuminate\Support\Collection;
+use Tightenco\Collect\Support\Collection;
 
 class DirectDriver extends RegexpDriver
 {
@@ -16,7 +16,7 @@ class DirectDriver extends RegexpDriver
     {
         list($name, $version) = $arguments;
 
-        if (strtolower($version) == 'tp') {
+        if (strtolower($version) === 'tp') {
             $version = 'TP';
         }
 
@@ -33,7 +33,7 @@ class DirectDriver extends RegexpDriver
             // Add a .0 if there is none and remove a .0 is there is
             if (strpos($version, '.') === false) {
                 $versionAlias = $version . '.0';
-            } elseif (substr($version, -2) == '.0') {
+            } elseif (substr($version, -2) === '.0') {
                 $versionAlias = substr($version, 0, -2);
             }
 

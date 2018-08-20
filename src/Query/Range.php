@@ -3,7 +3,7 @@
 namespace Buttress\Browserslist\Query;
 
 use Buttress\Browserslist\Browserslist;
-use Illuminate\Support\Collection;
+use Tightenco\Collect\Support\Collection;
 
 class Range extends RegexpDriver
 {
@@ -20,8 +20,8 @@ class Range extends RegexpDriver
             throw new \InvalidArgumentException("Unknown browser {$name}");
         }
         $normalizer = $list->getVersionNormalizer();
-        $from = floatval($normalizer->normalizeVersion($name, $from));
-        $to = floatval($normalizer->normalizeVersion($name, $to));
+        $from = (float)$normalizer->normalizeVersion($name, $from);
+        $to = (float)$normalizer->normalizeVersion($name, $to);
 
         $releases = new Collection($data['released']);
 

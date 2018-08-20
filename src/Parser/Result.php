@@ -2,22 +2,22 @@
 
 namespace Buttress\Browserslist\Parser;
 
-use Illuminate\Support\Collection;
+use Tightenco\Collect\Support\Collection;
 
 class Result
 {
     /**
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     public $data;
 
     /**
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     public $usage;
 
     /**
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     public $aliases;
 

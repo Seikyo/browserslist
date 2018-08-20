@@ -3,7 +3,7 @@
 namespace Buttress\Browserslist\Query;
 
 use Buttress\Browserslist\BrowsersList;
-use Illuminate\Support\Collection;
+use Tightenco\Collect\Support\Collection;
 
 class LastByBrowser extends RegexpDriver
 {
@@ -14,7 +14,7 @@ class LastByBrowser extends RegexpDriver
         $data = $list->getDataByBrowser($name);
         $versions = Collection::make($data['released']);
 
-        return $versions->slice(-1 * intval($count))->map(function ($version) use ($data) {
+        return $versions->slice(-1 * (int)$count)->map(function ($version) use ($data) {
             return implode(' ', [$data['name'], $version]);
         });
     }

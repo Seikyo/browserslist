@@ -12,14 +12,14 @@ use Buttress\Browserslist\Query\LastVersions;
 use Buttress\Browserslist\Query\OperaMini;
 use Buttress\Browserslist\Query\Range;
 use Buttress\Browserslist\Query\Versions;
-use Illuminate\Support\Collection;
+use Tightenco\Collect\Support\Collection;
 
 class Browserslist
 {
     /** @var array This array may contain fqn classname strings or instances of \Buttress\BrowsersList\Query\Driver */
     protected $queryDrivers;
 
-    /** @var \Illuminate\Support\Collection */
+    /** @var Collection */
     protected $aliases;
 
     /** @var Collection */
@@ -28,10 +28,10 @@ class Browserslist
     /** @var Collection */
     protected $usage;
 
-    /** @var \Illuminate\Support\Collection */
+    /** @var Collection */
     protected $browsers;
 
-    /** @var \Illuminate\Support\Collection */
+    /** @var Collection */
     protected $data;
 
     /** @var array|string */
@@ -93,11 +93,13 @@ class Browserslist
         }
 
         return Collection::make($browsers)->reduce(function ($total, $browser) use ($list) {
-            if (!$usage = array_get($list->getUsage()->get("global"), $browser)) {
-                $usage = array_get($list->getUsage()->get("global"), preg_replace('/ [\d.]+$/', ' 0', $browser));
+            $global = $list->getUsage()->get("global");
+            if (!$usage = $global[$browser] ?? null) {
+                $key = preg_replace('/ [\d.]+$/', ' 0', $browser);
+                $usage = $global[$key] ?? null;
             }
 
-            return $total + floatval($usage);
+            return $total + \floatval($usage);
         }, 0);
     }
 
@@ -141,7 +143,7 @@ class Browserslist
     /**
      * Run a query against the Browserlist data
      * @param $query
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      * @throws \InvalidArgumentException If a query passed is not recognized
      */
     public function query($query = null)
@@ -195,7 +197,7 @@ class Browserslist
 
     /**
      * Takes a collection and removes the results of the passed query
-     * @param \Illuminate\Support\Collection $result
+     * @param Collection $result
      * @param $query
      * @return Collection
      */
@@ -211,7 +213,7 @@ class Browserslist
     /**
      * Internal query handling method, this delegates to drivers
      * @param $query
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     private function handleQuery($query)
     {
@@ -322,7 +324,7 @@ class Browserslist
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function getAliases()
     {
@@ -330,7 +332,7 @@ class Browserslist
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function getBrowsers()
     {
@@ -338,7 +340,7 @@ class Browserslist
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function getData()
     {
@@ -348,7 +350,7 @@ class Browserslist
     /**
      * Magic method for running a query by invoking the class
      * @param array ...$arguments
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function __invoke(...$arguments)
     {
